@@ -8,6 +8,11 @@
     "spec": "NODE_PATH=./src mocha -r intelli-espower-loader test/**/*.spec.js",
     "lint": "eslint ."
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "author": "Colorful Company,Inc.",
   "license": "BSD-2-Clause",
   "devDependencies": {
