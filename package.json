@@ -1,0 +1,25 @@
+{
+  "name": "gcp-storage-proxy",
+  "version": "0.1.0",
+  "description": "Google Cloud Storage and Local File System Proxy",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm-run-all lint spec",
+    "spec": "NODE_PATH=./src mocha -r intelli-espower-loader test/**/*.spec.js",
+    "lint": "eslint ."
+  },
+  "author": "Colorful Company,Inc.",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "intelli-espower-loader": "^1.0.1",
+    "mocha": "^6.2.2",
+    "npm-run-all": "^4.1.5",
+    "power-assert": "^1.6.1"
+  }
+}
