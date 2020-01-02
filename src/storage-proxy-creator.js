@@ -29,7 +29,7 @@ class StorageProxyCreator {
     const creator = new this(name, { projectId, env, rootDir })
     const pkg = creator.initPkgcloud()
 
-    return new StorageProxy(pkg)
+    return new StorageProxy(pkg, name)
   }
 
   /**
