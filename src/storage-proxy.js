@@ -1,3 +1,4 @@
+const { Readable } = require('stream')
 class MethodNotAllowed extends Error {
   get name () { return 'MethodNotAllowed' }
 }
@@ -87,6 +88,49 @@ class StorageProxy {
         } else {
           resolve(container)
         }
+      })
+    })
+  }
+
+  /**
+   * @param {string} file
+   * @param {string} data
+   * @return {Promise} - File
+   */
+  async write (file, data) {
+    return new Promise((resolve, reject) => {
+      const readable = new Readable()
+
+      const writable = this.driver.upload({
+        container: this.container,
+        remote: file
+      })
+      writable.on('error', (err) => reject(err))
+      writable.on('success', (file) => resolve(file))
+
+      readable.pipe(writable)
+
+      readable.push(data)
+      readable.push(null)
+    })
+  }
+
+  /**
+   * @param {string} file
+   * @return {string}
+   */
+  async read (file) {
+    return new Promise((resolve, reject) => {
+      const readable = this.driver.download({
+        container: this.container,
+        remote: file
+      })
+
+      const chunks = []
+      readable.on('error', (err) => reject(err))
+      readable.on('data', (chunk) => chunks.push(chunk))
+      readable.on('end', () => {
+        resolve(Buffer.concat(chunks).toString('utf8'))
       })
     })
   }

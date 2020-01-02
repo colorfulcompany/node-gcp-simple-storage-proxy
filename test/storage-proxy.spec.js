@@ -16,7 +16,11 @@ describe('StorageProxy', () => {
   })
 
   function prepareContainer () { // eslint-disable-line
-    fs.mkdirSync(path.join(storage.driver.root, containerName))
+    try {
+      fs.mkdirSync(path.join(storage.driver.root, containerName))
+    } catch (e) {
+      ;
+    }
   }
 
   function cleanContainer () { // eslint-disable-line
@@ -78,6 +82,41 @@ describe('StorageProxy', () => {
       it('Container object', async () => {
         const container = await storage.getContainer()
         assert.equal(container.name, containerName)
+      })
+    })
+  })
+
+  describe('write and read', () => {
+    const fileName = 'file.txt'
+    const data = 'lorm ipsum'
+
+    beforeEach(() => prepareContainer())
+    afterEach(() => cleanContainer())
+
+    describe('#write', () => {
+      it('file has been written', async () => {
+        await storage.write(fileName, data)
+        assert.equal(
+          fs.readFileSync(path.join(storage.driver.root, storage.container, fileName)),
+          data)
+      })
+    })
+
+    describe('#read', () => {
+      describe('success', () => {
+        it('read written data', async () => {
+          await storage.write(fileName, data)
+          assert(await storage.read(fileName), data)
+        })
+      })
+
+      describe('failure', () => {
+        it('reject', async () => {
+          await storage.write(fileName, data)
+          assert.rejects(
+            async () => storage.read('nonexist.txt')
+          )
+        })
       })
     })
   })
