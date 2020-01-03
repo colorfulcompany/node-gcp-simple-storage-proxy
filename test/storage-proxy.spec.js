@@ -5,6 +5,8 @@ const path = require('path')
 
 const assert = require('power-assert')
 const rimraf = require('rimraf')
+const _ = {}
+_.uniq = require('lodash.uniq')
 
 const StorageProxyCreator = require('storage-proxy-creator')
 
@@ -117,6 +119,36 @@ describe('StorageProxy', () => {
             async () => storage.read('nonexist.txt')
           )
         })
+      })
+    })
+  })
+
+  describe('#getFiles', () => {
+    beforeEach(async () => {
+      prepareContainer()
+      await storage.write('abc.txt', 'abc')
+      await storage.write('path/abc.txt', 'abc inside path')
+    })
+    afterEach(() => cleanContainer())
+
+    describe('cannot hold directory hierarchy', () => {
+      it('2 files made, but 1 unique name', async () => {
+        assert.equal(
+          _.uniq((await storage.getFiles()).map(e => {
+            return JSON.stringify({
+              container: e.container,
+              name: e.name,
+              location: e.location
+            })
+          })).length,
+          1
+        )
+      })
+    })
+
+    describe('direct read', () => {
+      it('can', async () => {
+        assert((await storage.read('path/abc.txt')).length > 0)
       })
     })
   })

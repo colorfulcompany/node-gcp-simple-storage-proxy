@@ -134,6 +134,53 @@ class StorageProxy {
       })
     })
   }
+
+  /**
+   * @return {Promise} - Array
+   */
+  async getFiles () {
+    return new Promise((resolve, reject) => {
+      this.driver.getFiles(this.container, (err, files) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(files)
+        }
+      })
+    })
+  }
+
+  /**
+   * @param {string} file
+   * @return {Promise} - File
+   */
+  async getFile (file) {
+    return new Promise((resolve, reject) => {
+      this.driver.getFile(this.container, file, (err, f) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(f)
+        }
+      })
+    })
+  }
+
+  /**
+   * @param {string}
+   * @return {Promise} - boolean
+   */
+  async removeFile (file) {
+    return new Promise((resolve, reject) => {
+      this.driver.removeFile(this.container, file, (err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(true)
+        }
+      })
+    })
+  }
 }
 
 module.exports = StorageProxy
