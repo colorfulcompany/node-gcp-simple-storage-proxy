@@ -23,13 +23,16 @@ class StorageProxyCreator {
 
   /**
    * @param {string} name
+   * @param {string} projectId
    * @param {string} env
+   * @param {string} rootDir
+   * @return {object} - StorageProxy
    */
   static create (name, { projectId, env, rootDir }) {
     const creator = new this(name, { projectId, env, rootDir })
     const pkg = creator.initPkgcloud()
 
-    return new StorageProxy(pkg, name)
+    return new StorageProxy(pkg, creator.resolveName(creator.name))
   }
 
   /**
@@ -48,6 +51,14 @@ class StorageProxyCreator {
       case 'filesystem':
         return 'filesystem'
     }
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  resolveName (name) {
+    return name
   }
 
   /**
