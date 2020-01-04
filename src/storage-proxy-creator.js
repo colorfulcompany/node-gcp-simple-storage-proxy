@@ -1,6 +1,5 @@
 const path = require('path')
 const pkgcloud = require('pkgcloud')
-const filesystem = require('filesystem-storage-pkgcloud')
 const StorageProxy = require('./storage-proxy')
 
 class StorageProxyCreator {
@@ -85,7 +84,7 @@ class StorageProxyCreator {
    */
   initPkgcloudWithFilesystem (name, { rootDir }) {
     pkgcloud.providers.filesystem = {
-      storage: filesystem
+      storage: require('filesystem-storage-pkgcloud')
     }
 
     return pkgcloud.storage.createClient({
@@ -100,7 +99,10 @@ class StorageProxyCreator {
    * @return {object} - pkgcloud.Client
    */
   initPkgcloudWithGoogle (name, { projectId }) {
-    return { name: { projectId } }
+    return pkgcloud.storage.createClient({
+      provider: 'google',
+      projectId
+    })
   }
 }
 

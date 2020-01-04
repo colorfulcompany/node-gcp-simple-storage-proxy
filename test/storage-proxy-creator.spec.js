@@ -20,4 +20,18 @@ describe('StorageProxyCreator', () => {
       assert.equal(pkg.constructor.name, 'FileSystemProvider')
     })
   })
+
+  describe('#initPkgcloudWithGoogle', () => {
+    it('google client', () => {
+      const creator = new StorageProxyCreator('abc', {
+        projectId: 'test-project',
+        env: 'production'
+      })
+      const pkg = creator.initPkgcloud()
+      assert.equal(pkg.provider, 'google')
+      assert.equal(
+        pkg.storage.baseUrl,
+        'https://www.googleapis.com/storage/v1')
+    })
+  })
 })
