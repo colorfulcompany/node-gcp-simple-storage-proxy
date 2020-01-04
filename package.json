@@ -1,5 +1,5 @@
 {
-  "name": "gcp-storage-proxy",
+  "name": "gcp-simple-storage-proxy",
   "version": "0.1.0",
   "description": "Google Cloud Storage and Local File System Proxy",
   "main": "index.js",
