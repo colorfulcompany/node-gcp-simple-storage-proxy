@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": ">= 10"
+  },
   "name": "gcp-simple-storage-proxy",
   "version": "0.1.1",
   "description": "Google Cloud Storage and Local File System Proxy",
